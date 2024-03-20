@@ -61,11 +61,26 @@ class PlaceholderFunctionTest {
             .isFailure()
             .isA<FailureToLandInMarsException>()
     }
+
+    @Test
+    fun `mars coordinates should have the maximum value of 50 `() {
+        expectCatching { Mars(Pair(1, 51)) }
+            .isFailure()
+            .isA<NoSuchBigPlanetExistsException>()
+    }
 }
+
+class NoSuchBigPlanetExistsException(message: String) : Exception(message)
 
 class FailureToLandInMarsException(message: String) : Exception(message)
 
 class Mars(private val planetSize: Pair<Int, Int>) {
+    init {
+        if (planetSize.first > 50 || planetSize.second > 50) {
+            throw NoSuchBigPlanetExistsException("Planet dimensions must not exceed 50 in any direction.")
+        }
+    }
+
     fun welcomeIncomingRover(startingPoint: Pair<Int, Int>): Rover {
         if (startingPoint.first > planetSize.first || startingPoint.second > planetSize.second) {
             throw FailureToLandInMarsException("Starting point is outside the boundaries of Mars.")
