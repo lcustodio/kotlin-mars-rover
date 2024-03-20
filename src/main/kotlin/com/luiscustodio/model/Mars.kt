@@ -4,7 +4,7 @@ import com.luiscustodio.expection.FailureToLandInMarsException
 import com.luiscustodio.expection.NoSuchBigPlanetExistsException
 
 class Mars(internal val planetSize: Pair<Int, Int>) {
-    private val roversHistory = mutableListOf<Rover>()
+    internal val roversHistory = mutableListOf<Rover>()
 
     init {
         if (planetSize.first > 50 || planetSize.second > 50) {
@@ -12,11 +12,14 @@ class Mars(internal val planetSize: Pair<Int, Int>) {
         }
     }
 
-    fun welcomeIncomingRover(startingPoint: Pair<Int, Int>): Rover {
+    fun welcomeIncomingRover(
+        startingPoint: Pair<Int, Int>,
+        direction: Direction = Direction.NORTH,
+    ): Rover {
         if (startingPoint.first > planetSize.first || startingPoint.second > planetSize.second) {
             throw FailureToLandInMarsException("Starting point is outside the boundaries of Mars.")
         }
-        val rover = Rover(startingPoint, this)
+        val rover = Rover(startingPoint, direction, this)
         roversHistory.add(rover)
         return rover
     }

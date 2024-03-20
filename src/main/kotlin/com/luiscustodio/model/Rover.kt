@@ -1,9 +1,11 @@
 package com.luiscustodio.model
 
-class Rover(startingPosition: Pair<Int, Int>, private val mars: Mars) {
+class Rover(
+    var position: Pair<Int, Int>,
+    var direction: Direction,
+    private val mars: Mars,
+) {
     var isOperational = true
-    var position = startingPosition
-    private var direction: Direction = Direction.NORTH
 
     fun moveForward() {
         position =
