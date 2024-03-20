@@ -79,6 +79,22 @@ class PlaceholderFunctionTest {
 
         expectThat(rover.isOperational).isEqualTo(false)
     }
+
+    @Test
+    fun `only one rover can be lost in a given grid point, future rover should ignore destructive instructions`() {
+        val rover = mars.welcomeIncomingRover(Pair(1, 1))
+        rover.turn('L')
+        rover.moveForward()
+        rover.moveForward()
+
+        val rover2 = mars.welcomeIncomingRover(Pair(1, 1))
+        rover2.turn('L')
+        rover2.moveForward()
+        rover2.moveForward()
+
+        expectThat(rover2.isOperational).isEqualTo(true)
+        expectThat(rover2.position).isEqualTo(Pair(1, 0))
+    }
 }
 
 class NoSuchBigPlanetExistsException(message: String) : Exception(message)
@@ -86,6 +102,8 @@ class NoSuchBigPlanetExistsException(message: String) : Exception(message)
 class FailureToLandInMarsException(message: String) : Exception(message)
 
 class Mars(internal val planetSize: Pair<Int, Int>) {
+    private val roversHistory = mutableListOf<Rover>()
+
     init {
         if (planetSize.first > 50 || planetSize.second > 50) {
             throw NoSuchBigPlanetExistsException("Planet dimensions must not exceed 50 in any direction.")
@@ -96,7 +114,15 @@ class Mars(internal val planetSize: Pair<Int, Int>) {
         if (startingPoint.first > planetSize.first || startingPoint.second > planetSize.second) {
             throw FailureToLandInMarsException("Starting point is outside the boundaries of Mars.")
         }
-        return Rover(startingPoint, this)
+        val rover = Rover(startingPoint, this)
+        roversHistory.add(rover)
+        return rover
+    }
+
+    fun isThereRoverScent(newPosition: Pair<Int, Int>): Boolean {
+        return roversHistory.any { rover ->
+            !rover.isOperational && rover.position == newPosition
+        }
     }
 }
 
@@ -121,6 +147,9 @@ class Rover(startingPosition: Pair<Int, Int>, private val mars: Mars) {
         if (newPosition.first < 0 || newPosition.first > mars.planetSize.first ||
             newPosition.second < 0 || newPosition.second > mars.planetSize.second
         ) {
+            if (mars.isThereRoverScent(position)) {
+                return position
+            }
             isOperational = false
             return position
         }
