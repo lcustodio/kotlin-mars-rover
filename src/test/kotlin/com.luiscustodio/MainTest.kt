@@ -1,13 +1,18 @@
 package com.luiscustodio
 
+import strikt.api.expectCatching
 import strikt.api.expectThat
+import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
 import kotlin.test.Test
 
 class PlaceholderFunctionTest {
+    private val mars = Mars(Pair(2, 2))
+
     @Test
     fun `it should be able to move forwards`() {
-        val rover = Rover(Pair(1, 1))
+        val rover = mars.welcomeIncomingRover(Pair(1, 1))
         rover.moveForward()
 
         expectThat(rover.position).isEqualTo(Pair(2, 1))
@@ -15,7 +20,7 @@ class PlaceholderFunctionTest {
 
     @Test
     fun `it should be able to move forwards twice in a row`() {
-        val rover = Rover(Pair(1, 1))
+        val rover = mars.welcomeIncomingRover(Pair(1, 1))
         rover.moveForward()
         rover.moveForward()
 
@@ -24,7 +29,7 @@ class PlaceholderFunctionTest {
 
     @Test
     fun `it should be able to turn left and forward`() {
-        val rover = Rover(Pair(1, 1))
+        val rover = mars.welcomeIncomingRover(Pair(1, 1))
         rover.turn('L')
         rover.moveForward()
 
@@ -33,7 +38,7 @@ class PlaceholderFunctionTest {
 
     @Test
     fun `it should be able to move east`() {
-        val rover = Rover(Pair(1, 1))
+        val rover = mars.welcomeIncomingRover(Pair(1, 1))
         rover.turn('R')
         rover.moveForward()
 
@@ -42,16 +47,34 @@ class PlaceholderFunctionTest {
 
     @Test
     fun `it should be able to move south`() {
-        val rover = Rover(Pair(1, 1))
+        val rover = mars.welcomeIncomingRover(Pair(1, 1))
         rover.turn('R')
         rover.turn('R')
         rover.moveForward()
 
         expectThat(rover.position).isEqualTo(Pair(0, 1))
     }
+
+    @Test
+    fun `rover should land in a valid planet location`() {
+        expectCatching { mars.welcomeIncomingRover(Pair(5, 5)) }
+            .isFailure()
+            .isA<FailureToLandInMarsException>()
+    }
 }
 
-class Rover(startingPosition: Pair<Int, Int>) {
+class FailureToLandInMarsException(message: String) : Exception(message)
+
+class Mars(private val planetSize: Pair<Int, Int>) {
+    fun welcomeIncomingRover(startingPoint: Pair<Int, Int>): Rover {
+        if (startingPoint.first > planetSize.first || startingPoint.second > planetSize.second) {
+            throw FailureToLandInMarsException("Starting point is outside the boundaries of Mars.")
+        }
+        return Rover(startingPoint, this)
+    }
+}
+
+class Rover(startingPosition: Pair<Int, Int>, mars: Mars) {
     var position = startingPosition
     private var direction: Direction = Direction.NORTH
 
