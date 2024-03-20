@@ -23,12 +23,21 @@ class PlaceholderFunctionTest {
     }
 
     @Test
-    fun `it should be able to move left`() {
+    fun `it should be able to turn left and forward`() {
         val rover = Rover(Pair(1, 1))
         rover.turn('L')
         rover.moveForward()
 
         expectThat(rover.position).isEqualTo(Pair(1, 0))
+    }
+
+    @Test
+    fun `it should be able to move east`() {
+        val rover = Rover(Pair(1, 1))
+        rover.turn('R')
+        rover.moveForward()
+
+        expectThat(rover.position).isEqualTo(Pair(1, 2))
     }
 }
 
@@ -40,7 +49,7 @@ class Rover(startingPosition: Pair<Int, Int>) {
         position =
             when (direction) {
                 Direction.NORTH -> Pair(position.first + 1, position.second)
-                Direction.EAST -> TODO()
+                Direction.EAST -> Pair(position.first, position.second + 1)
                 Direction.SOUTH -> TODO()
                 Direction.WEST -> Pair(position.first, position.second - 1)
             }
@@ -49,8 +58,8 @@ class Rover(startingPosition: Pair<Int, Int>) {
     fun turn(c: Char) {
         direction =
             when (c) {
-                'L' -> Direction.previous(direction)
-                else -> direction
+                'L' -> Direction.anticlockwise(direction)
+                else -> Direction.clockwise(direction)
             }
     }
 }
@@ -63,10 +72,16 @@ enum class Direction {
     ;
 
     companion object {
-        fun previous(currentEnum: Direction): Direction {
+        fun anticlockwise(currentEnum: Direction): Direction {
             val values = entries.toTypedArray()
             val previousIndex = (currentEnum.ordinal - 1 + values.size) % values.size
             return values[previousIndex]
+        }
+
+        fun clockwise(currentEnum: Direction): Direction {
+            val values = entries.toTypedArray()
+            val nextIndex = (currentEnum.ordinal + 1) % values.size
+            return values[nextIndex]
         }
     }
 }
