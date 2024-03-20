@@ -39,6 +39,16 @@ class PlaceholderFunctionTest {
 
         expectThat(rover.position).isEqualTo(Pair(1, 2))
     }
+
+    @Test
+    fun `it should be able to move south`() {
+        val rover = Rover(Pair(1, 1))
+        rover.turn('R')
+        rover.turn('R')
+        rover.moveForward()
+
+        expectThat(rover.position).isEqualTo(Pair(0, 1))
+    }
 }
 
 class Rover(startingPosition: Pair<Int, Int>) {
@@ -50,7 +60,7 @@ class Rover(startingPosition: Pair<Int, Int>) {
             when (direction) {
                 Direction.NORTH -> Pair(position.first + 1, position.second)
                 Direction.EAST -> Pair(position.first, position.second + 1)
-                Direction.SOUTH -> TODO()
+                Direction.SOUTH -> Pair(position.first - 1, position.second)
                 Direction.WEST -> Pair(position.first, position.second - 1)
             }
     }
