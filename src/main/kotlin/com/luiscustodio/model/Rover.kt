@@ -8,13 +8,14 @@ class Rover(
     var isOperational = true
 
     fun moveForward() {
+        if (!isOperational) return
         position =
             assessBoundaries(
                 when (direction) {
-                    Direction.NORTH -> Pair(position.first + 1, position.second)
-                    Direction.EAST -> Pair(position.first, position.second + 1)
-                    Direction.SOUTH -> Pair(position.first - 1, position.second)
-                    Direction.WEST -> Pair(position.first, position.second - 1)
+                    Direction.NORTH -> Pair(position.first, position.second + 1)
+                    Direction.EAST -> Pair(position.first + 1, position.second)
+                    Direction.SOUTH -> Pair(position.first, position.second - 1)
+                    Direction.WEST -> Pair(position.first - 1, position.second)
                 },
             )
     }
@@ -32,11 +33,13 @@ class Rover(
         return newPosition
     }
 
-    fun turn(c: Char) {
-        direction =
-            when (c) {
-                'L' -> Direction.anticlockwise(direction)
-                else -> Direction.clockwise(direction)
-            }
+    fun turnLeft() {
+        if (!isOperational) return
+        direction = Direction.anticlockwise(direction)
+    }
+
+    fun turnRight() {
+        if (!isOperational) return
+        direction = Direction.clockwise(direction)
     }
 }

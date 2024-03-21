@@ -30,16 +30,16 @@ class MarsTest {
     @Test
     fun `only one rover can be lost in a given grid point, future rover should ignore destructive instructions`() {
         val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.turn('L')
+        rover.turnLeft()
         rover.moveForward()
         rover.moveForward()
 
         val rover2 = mars.welcomeIncomingRover(Pair(1, 1))
-        rover2.turn('L')
+        rover2.turnLeft()
         rover2.moveForward()
         rover2.moveForward()
 
         expectThat(rover2.isOperational).isEqualTo(true)
-        expectThat(rover2.position).isEqualTo(Pair(1, 0))
+        expectThat(rover2.position).isEqualTo(Pair(0, 1))
     }
 }

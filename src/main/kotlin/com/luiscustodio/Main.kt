@@ -1,9 +1,9 @@
 package com.luiscustodio
 
 import com.luiscustodio.model.Mars
-import com.luiscustodio.model.Rover
-import com.luiscustodio.util.allRoverPositions
-import com.luiscustodio.util.from
+import com.luiscustodio.util.charToDirection
+import com.luiscustodio.util.processCommands
+import com.luiscustodio.util.roversPositionsStringOutput
 
 fun handleInstructions(instructions: String): String {
     val lines = instructions.split("\n").filter { it.isNotBlank() }
@@ -13,22 +13,12 @@ fun handleInstructions(instructions: String): String {
 
     lines.drop(1).chunked(2).forEach { chunk ->
         val (x, y, directionChar) = chunk[0].split(" ")
-        val direction = from(directionChar[0])
+        val direction = charToDirection(directionChar[0])
         val commands = chunk[1]
 
         val rover = mars.welcomeIncomingRover(Pair(x.toInt(), y.toInt()), direction)
         rover.processCommands(commands)
     }
 
-    return mars.allRoverPositions()
-}
-
-fun Rover.processCommands(commands: String) {
-    commands.forEach { command ->
-        when (command) {
-            'R' -> turn('R')
-            'L' -> turn('L')
-            'F' -> moveForward()
-        }
-    }
+    return mars.roversPositionsStringOutput()
 }

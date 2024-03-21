@@ -2,10 +2,10 @@ package com.luiscustodio.util
 
 import com.luiscustodio.model.Mars
 
-fun Mars.allRoverPositions(): String {
+fun Mars.roversPositionsStringOutput(): String {
     val output =
         roversHistory.map {
-            "${it.position.first} ${it.position.second} ${toChar(it.direction)} ${if (!it.isOperational) "LOST" else ""}"
+            "${it.position.first} ${it.position.second} ${directionToChar(it.direction)} ${if (!it.isOperational) "LOST" else ""}"
         }
     return output.joinToString(separator = "\n\n")
 }
