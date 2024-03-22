@@ -1,7 +1,7 @@
 package com.luiscustodio
 
-import com.luiscustodio.expection.FailureToLandInMarsException
-import com.luiscustodio.expection.NoSuchBigPlanetExistsException
+import com.luiscustodio.exception.FailureToLandInMarsException
+import com.luiscustodio.exception.NoSuchBigPlanetExistsException
 import com.luiscustodio.model.Mars
 import strikt.api.expectCatching
 import strikt.api.expectThat

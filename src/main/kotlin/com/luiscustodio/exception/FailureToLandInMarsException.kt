@@ -1,3 +1,3 @@
-package com.luiscustodio.expection
+package com.luiscustodio.exception
 
 class FailureToLandInMarsException(message: String) : Exception(message)

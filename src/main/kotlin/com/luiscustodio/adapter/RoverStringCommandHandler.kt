@@ -1,4 +1,4 @@
-package com.luiscustodio.util
+package com.luiscustodio.adapter
 
 import com.luiscustodio.model.Rover
 

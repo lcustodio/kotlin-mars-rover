@@ -1,9 +1,9 @@
 package com.luiscustodio
 
+import com.luiscustodio.adapter.charToDirection
+import com.luiscustodio.adapter.processCommands
+import com.luiscustodio.adapter.roversPositionsStringOutput
 import com.luiscustodio.model.Mars
-import com.luiscustodio.util.charToDirection
-import com.luiscustodio.util.processCommands
-import com.luiscustodio.util.roversPositionsStringOutput
 
 fun handleInstructions(instructions: String): String {
     val lines = instructions.split("\n").filter { it.isNotBlank() }

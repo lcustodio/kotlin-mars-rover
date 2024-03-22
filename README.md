@@ -9,8 +9,9 @@ The repository is divided in two main areas:
 ### Model
 Model is the core part intentionally kept as simple as possible and highly covered by test scenarios
 
-### Util 
-Contains the current interface to commands, this is likely to evolve in the event to porting to REST, gRPC etc.
+### Adapter Layer 
+Separation of Responsibilities
+Contains an interface to string commands, this is likely to evolve in the event of porting to REST, gRPC etc.
 
 
 ## Troubleshoot

@@ -1,7 +1,7 @@
 package com.luiscustodio.model
 
-import com.luiscustodio.expection.FailureToLandInMarsException
-import com.luiscustodio.expection.NoSuchBigPlanetExistsException
+import com.luiscustodio.exception.FailureToLandInMarsException
+import com.luiscustodio.exception.NoSuchBigPlanetExistsException
 
 class Mars(internal val planetSize: Pair<Int, Int>) {
     internal val roversHistory = mutableListOf<Rover>()
