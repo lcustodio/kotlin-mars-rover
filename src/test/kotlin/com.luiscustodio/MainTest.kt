@@ -29,6 +29,7 @@ class MainTest {
             2 3 S 
             """.trimIndent()
 
-        expectThat(handleInstructions(instructions)).isEqualTo(expected)
+        val channel = MarsHoverCommunicationChannel()
+        expectThat(channel.textHandler(instructions)).isEqualTo(expected)
     }
 }
