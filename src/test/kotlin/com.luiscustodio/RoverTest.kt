@@ -2,12 +2,14 @@ package com.luiscustodio
 
 import com.luiscustodio.model.Direction
 import com.luiscustodio.model.Mars
+import com.luiscustodio.service.SpaceStation
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import kotlin.test.Test
 
 class RoverTest {
-    private val mars = Mars(Pair(2, 2))
+    private val spaceStation = SpaceStation()
+    private val mars = Mars(Pair(2, 2), spaceStation)
 
     @Test
     fun `it should be able to move forwards`() {
@@ -19,7 +21,7 @@ class RoverTest {
 
     @Test
     fun `it should be able to move forwards twice in a row`() {
-        val mars = Mars(Pair(3, 3))
+        val mars = Mars(Pair(3, 3), spaceStation)
         val rover = mars.welcomeIncomingRover(Pair(1, 1))
         rover.moveForward()
         rover.moveForward()

@@ -1,11 +1,7 @@
 package com.luiscustodio.adapter
 
-import com.luiscustodio.model.Mars
+import com.luiscustodio.model.Rover
 
-fun Mars.roversPositionsStringOutput(): String {
-    val output =
-        roversHistory.map {
-            "${it.position.first} ${it.position.second} ${directionToChar(it.direction)} ${if (!it.isOperational) "LOST" else ""}"
-        }
-    return output.joinToString(separator = "\n\n")
+fun Rover.positionsStringOutput(): String {
+    return "${position.first} ${position.second} ${directionToChar(direction)} ${if (!isOperational) "LOST" else ""}"
 }

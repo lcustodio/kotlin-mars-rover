@@ -2,10 +2,12 @@ package com.luiscustodio.model
 
 import com.luiscustodio.exception.FailureToLandInMarsException
 import com.luiscustodio.exception.NoSuchBigPlanetExistsException
+import com.luiscustodio.service.SpaceStation
 
-class Mars(internal val planetSize: Pair<Int, Int>) {
-    internal val roversHistory = mutableListOf<Rover>()
-
+class Mars(
+    private val planetSize: Pair<Int, Int>,
+    private val spaceStation: SpaceStation,
+) {
     init {
         if (planetSize.first > 50 || planetSize.second > 50) {
             throw NoSuchBigPlanetExistsException("Planet dimensions must not exceed 50 in any direction.")
@@ -19,14 +21,6 @@ class Mars(internal val planetSize: Pair<Int, Int>) {
         if (startingPoint.first > planetSize.first || startingPoint.second > planetSize.second) {
             throw FailureToLandInMarsException("Starting point is outside the boundaries of Mars.")
         }
-        val rover = Rover(startingPoint, direction, this)
-        roversHistory.add(rover)
-        return rover
-    }
-
-    fun isThereRoverScent(newPosition: Pair<Int, Int>): Boolean {
-        return roversHistory.any { rover ->
-            !rover.isOperational && rover.position == newPosition
-        }
+        return Rover(startingPoint, direction, spaceStation = spaceStation, planetSize = planetSize)
     }
 }

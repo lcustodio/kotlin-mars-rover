@@ -3,6 +3,7 @@ package com.luiscustodio
 import com.luiscustodio.exception.FailureToLandInMarsException
 import com.luiscustodio.exception.NoSuchBigPlanetExistsException
 import com.luiscustodio.model.Mars
+import com.luiscustodio.service.SpaceStation
 import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.assertions.isA
@@ -11,7 +12,8 @@ import strikt.assertions.isFailure
 import kotlin.test.Test
 
 class MarsTest {
-    private val mars = Mars(Pair(2, 2))
+    private val spaceStation = SpaceStation()
+    private val mars = Mars(Pair(2, 2), spaceStation)
 
     @Test
     fun `rover should land in a valid planet location`() {
@@ -22,7 +24,7 @@ class MarsTest {
 
     @Test
     fun `mars coordinates should have the maximum value of 50 `() {
-        expectCatching { Mars(Pair(1, 51)) }
+        expectCatching { Mars(Pair(1, 51), spaceStation) }
             .isFailure()
             .isA<NoSuchBigPlanetExistsException>()
     }

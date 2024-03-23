@@ -2,7 +2,7 @@ package com.luiscustodio.adapter
 
 import com.luiscustodio.model.Rover
 
-fun Rover.processCommands(commands: String) {
+fun Rover.processCommands(commands: String): Rover {
     commands.forEach { command ->
         when (command) {
             'R' -> turnRight()
@@ -10,4 +10,5 @@ fun Rover.processCommands(commands: String) {
             'F' -> moveForward()
         }
     }
+    return this
 }
