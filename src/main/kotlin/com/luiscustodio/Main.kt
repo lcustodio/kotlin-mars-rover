@@ -18,7 +18,8 @@ fun handleInstructions(instructions: String): String {
         val direction = charToDirection(directionChar[0])
         val commands = chunk[1]
 
-        val rover = mars.welcomeIncomingRover(Pair(x.toInt(), y.toInt()), direction)
-        rover.processCommands(commands).positionsStringOutput()
+        mars.welcomeIncomingRover(Pair(x.toInt(), y.toInt()), direction)
+            .processCommands(commands)
+            .positionsStringOutput()
     }
 }

@@ -3,12 +3,15 @@ package com.luiscustodio.adapter
 import com.luiscustodio.model.Rover
 
 fun Rover.processCommands(commands: String): Rover {
-    commands.forEach { command ->
+    return commands.asSequence().fold(this) { rover, command ->
         when (command) {
-            'R' -> turnRight()
-            'L' -> turnLeft()
-            'F' -> moveForward()
+            'R' -> rover.turnRight()
+            'L' -> rover.turnLeft()
+            else -> rover.moveForward()
         }
     }
-    return this
+}
+
+fun Rover.positionsStringOutput(): String {
+    return "${position.first} ${position.second} ${directionToChar(direction)} ${if (!isOperational) "LOST" else ""}"
 }

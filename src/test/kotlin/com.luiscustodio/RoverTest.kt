@@ -13,75 +13,91 @@ class RoverTest {
 
     @Test
     fun `it should be able to move forwards`() {
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.moveForward()
+        val actualPosition =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .moveForward()
+                .position
 
-        expectThat(rover.position).isEqualTo(Pair(1, 2))
+        expectThat(actualPosition).isEqualTo(Pair(1, 2))
     }
 
     @Test
     fun `it should be able to move forwards twice in a row`() {
         val mars = Mars(Pair(3, 3), spaceStation)
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.moveForward()
-        rover.moveForward()
+        val actualPosition =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .moveForward()
+                .moveForward()
+                .position
 
-        expectThat(rover.position).isEqualTo(Pair(1, 3))
+        expectThat(actualPosition).isEqualTo(Pair(1, 3))
     }
 
     @Test
     fun `it should be able to turn left and forward`() {
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.turnLeft()
-        rover.moveForward()
+        val actualPosition =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .turnLeft()
+                .moveForward()
+                .position
 
-        expectThat(rover.position).isEqualTo(Pair(0, 1))
+        expectThat(actualPosition).isEqualTo(Pair(0, 1))
     }
 
     @Test
     fun `it should be able to move east`() {
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.turnRight()
-        rover.moveForward()
+        val actualPosition =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .turnRight()
+                .moveForward()
+                .position
 
-        expectThat(rover.position).isEqualTo(Pair(2, 1))
+        expectThat(actualPosition).isEqualTo(Pair(2, 1))
     }
 
     @Test
     fun `it should be able to move south`() {
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.turnRight()
-        rover.turnRight()
-        rover.moveForward()
+        val actualPosition =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .turnRight()
+                .turnRight()
+                .moveForward()
+                .position
 
-        expectThat(rover.position).isEqualTo(Pair(1, 0))
+        expectThat(actualPosition).isEqualTo(Pair(1, 0))
     }
 
     @Test
     fun `it should indicate if they become non-operational (falling a cliff)`() {
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.turnLeft()
-        rover.moveForward()
-        rover.moveForward()
+        val actualOperationalState =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .turnLeft()
+                .moveForward()
+                .moveForward()
+                .isOperational
 
-        expectThat(rover.isOperational).isEqualTo(false)
+        expectThat(actualOperationalState).isEqualTo(false)
     }
 
     @Test
     fun `it should no longer move if not operational`() {
-        val rover = mars.welcomeIncomingRover(Pair(1, 1))
-        rover.turnLeft()
-        rover.moveForward()
-        rover.moveForward()
+        val rover1 =
+            mars.welcomeIncomingRover(Pair(1, 1))
+                .turnLeft()
+                .moveForward()
+                .moveForward()
 
-        expectThat(rover.position).isEqualTo(Pair(0, 1))
-        expectThat(rover.direction).isEqualTo(Direction.WEST)
-        expectThat(rover.isOperational).isEqualTo(false)
+        expectThat(rover1.position).isEqualTo(Pair(0, 1))
+        expectThat(rover1.direction).isEqualTo(Direction.WEST)
+        expectThat(rover1.isOperational).isEqualTo(false)
 
-        rover.turnRight()
-        rover.moveForward()
-        expectThat(rover.position).isEqualTo(Pair(0, 1))
-        expectThat(rover.direction).isEqualTo(Direction.WEST)
-        expectThat(rover.isOperational).isEqualTo(false)
+        val keepsMoving =
+            rover1
+                .turnRight()
+                .moveForward()
+
+        expectThat(keepsMoving.position).isEqualTo(Pair(0, 1))
+        expectThat(keepsMoving.direction).isEqualTo(Direction.WEST)
+        expectThat(keepsMoving.isOperational).isEqualTo(false)
     }
 }
