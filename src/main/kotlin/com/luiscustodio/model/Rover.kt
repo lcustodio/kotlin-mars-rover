@@ -22,17 +22,18 @@ data class Rover(
     }
 
     private fun assessBoundaries(newPosition: Pair<Int, Int>): Rover {
-        if (newPosition.first < 0 || newPosition.first > planetSize.first ||
-            newPosition.second < 0 || newPosition.second > planetSize.second
+        if (newPosition.first in 0..planetSize.first &&
+            newPosition.second in 0..planetSize.second
         ) {
-            if (spaceStation.isCrashReportedPosition(position)) {
-                return this.copy(position = position)
-            }
-
-            spaceStation.reportCrashPosition(position)
-            return this.copy(position = position, isOperational = false)
+            return this.copy(position = newPosition)
         }
-        return this.copy(position = newPosition)
+
+        val shouldIgnoreInstructions = spaceStation.isCrashReportedPosition(position)
+        if (shouldIgnoreInstructions) {
+            return this
+        }
+        spaceStation.reportCrashPosition(position)
+        return this.copy(isOperational = false)
     }
 
     fun turnLeft(): Rover {
