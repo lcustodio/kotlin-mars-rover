@@ -13,31 +13,31 @@ import kotlin.test.Test
 
 class MarsTest {
     private val spaceStation = SpaceStation()
-    private val mars = Mars(Pair(2, 2), spaceStation)
+    private val mars = Mars(Pair(2, 2))
 
     @Test
     fun `rover should land in a valid planet location`() {
-        expectCatching { mars.welcomeIncomingRover(Pair(5, 5)) }
+        expectCatching { spaceStation.craftRoverForPlanet(landingPosition = Pair(5, 5), planet = mars) }
             .isFailure()
             .isA<FailureToLandInMarsException>()
     }
 
     @Test
     fun `mars coordinates should have the maximum value of 50 `() {
-        expectCatching { Mars(Pair(1, 51), spaceStation) }
+        expectCatching { Mars(Pair(1, 51)) }
             .isFailure()
             .isA<NoSuchBigPlanetExistsException>()
     }
 
     @Test
     fun `only one rover can be lost in a given grid point, future rover should ignore destructive instructions`() {
-        mars.welcomeIncomingRover(Pair(1, 1))
+        spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
             .turnLeft()
             .moveForward()
             .moveForward()
 
         val rover2 =
-            mars.welcomeIncomingRover(Pair(1, 1))
+            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
                 .turnLeft()
                 .moveForward()
                 .moveForward()

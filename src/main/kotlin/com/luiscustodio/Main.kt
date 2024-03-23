@@ -11,15 +11,20 @@ fun handleInstructions(instructions: String): String {
 
     val (width, height) = lines.first().split(" ").map { it.toInt() }
     val spaceStation = SpaceStation()
-    val mars = Mars(planetSize = Pair(width, height), spaceStation = spaceStation)
+    val mars = Mars(planetSize = Pair(width, height))
 
     return lines.drop(1).chunked(2).joinToString(separator = "\n\n") { chunk ->
         val (x, y, directionChar) = chunk[0].split(" ")
         val direction = charToDirection(directionChar[0])
         val commands = chunk[1]
 
-        mars.welcomeIncomingRover(Pair(x.toInt(), y.toInt()), direction)
-            .processCommands(commands)
-            .positionsStringOutput()
+        val rover =
+            spaceStation.craftRoverForPlanet(
+                landingPosition = Pair(x.toInt(), y.toInt()),
+                direction = direction,
+                planet = mars,
+            )
+
+        rover.processCommands(commands).positionsStringOutput()
     }
 }
