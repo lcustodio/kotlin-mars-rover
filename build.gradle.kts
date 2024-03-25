@@ -10,7 +10,3 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("io.strikt:strikt-core:0.34.0")
 }
-
-kotlin {
-    jvmToolchain(21)
-}
