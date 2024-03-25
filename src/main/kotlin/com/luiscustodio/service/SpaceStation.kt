@@ -1,31 +1,35 @@
 package com.luiscustodio.service
 
 import com.luiscustodio.exception.FailureToLandInMarsException
-import com.luiscustodio.model.Direction
 import com.luiscustodio.model.Mars
 import com.luiscustodio.model.Rover
+import com.luiscustodio.model.RoverPlan
 
 class SpaceStation {
-    private val crashPositions = mutableListOf<Pair<Int, Int>>()
+    private val rovers = mutableListOf<Rover>()
 
-    fun craftRoverForPlanet(
-        landingPosition: Pair<Int, Int>,
-        direction: Direction = Direction.NORTH,
+    fun deployRoversToPlanet(
+        roverPlans: List<RoverPlan>,
         planet: Mars,
-    ): Rover {
-        if (landingPosition.first > planet.planetSize.first || landingPosition.second > planet.planetSize.second) {
-            throw FailureToLandInMarsException("Invalid landing instruction. The position is outside the boundaries of Mars.")
-        }
-        return Rover(landingPosition, direction, spaceStation = this, planetSize = planet.planetSize)
-    }
+    ): List<Rover> {
+        roverPlans.forEach {
+            if (it.initialLocation.first > planet.planetSize.first || it.initialLocation.second > planet.planetSize.second) {
+                throw FailureToLandInMarsException("Invalid landing instruction. The position is outside the boundaries of Mars.")
+            }
 
-    fun reportCrashPosition(position: Pair<Int, Int>) {
-        this.crashPositions.add(position)
+            val baseRover = Rover(it.initialLocation, it.direction, spaceStation = this, planetSize = planet.planetSize)
+            val rover =
+                it.sequenceCommands.fold(baseRover) { rover, command ->
+                    command(rover)
+                }
+            rovers.add(rover)
+        }
+        return rovers
     }
 
     fun isCrashReportedPosition(positionCheck: Pair<Int, Int>): Boolean {
-        return this.crashPositions.any { position ->
-            position == positionCheck
+        return rovers.any { rover ->
+            !rover.isOperational && rover.position == positionCheck
         }
     }
 }

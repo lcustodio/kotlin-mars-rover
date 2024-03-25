@@ -29,7 +29,7 @@ class MainTest {
             2 3 S 
             """.trimIndent()
 
-        val channel = MarsHoverCommunicationChannel()
+        val channel = MarsRoverCommunicationChannel()
         expectThat(channel.textHandler(instructions)).isEqualTo(expected)
     }
 }

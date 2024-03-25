@@ -4,7 +4,7 @@ import com.luiscustodio.service.SpaceStation
 
 data class Rover(
     val position: Pair<Int, Int>,
-    val direction: Direction,
+    val direction: Direction = Direction.NORTH,
     val isOperational: Boolean = true,
     private val spaceStation: SpaceStation,
     private val planetSize: Pair<Int, Int>,
@@ -32,7 +32,7 @@ data class Rover(
         if (shouldIgnoreInstructions) {
             return this
         }
-        spaceStation.reportCrashPosition(position)
+//        spaceStation.reportCrashPosition(position)
         return this.copy(isOperational = false)
     }
 

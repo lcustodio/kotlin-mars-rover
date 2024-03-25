@@ -1,7 +1,7 @@
 package com.luiscustodio
 
 import com.luiscustodio.model.Direction
-import com.luiscustodio.model.Mars
+import com.luiscustodio.model.Rover
 import com.luiscustodio.service.SpaceStation
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -9,12 +9,12 @@ import kotlin.test.Test
 
 class RoverTest {
     private val spaceStation = SpaceStation()
-    private val mars = Mars(Pair(2, 2))
+    private val planetSize = Pair(2, 2)
 
     @Test
     fun `it should be able to move forwards`() {
         val actualPosition =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = planetSize, spaceStation = spaceStation)
                 .moveForward()
                 .position
 
@@ -23,9 +23,8 @@ class RoverTest {
 
     @Test
     fun `it should be able to move forwards twice in a row`() {
-        val mars = Mars(Pair(3, 3))
         val actualPosition =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = Pair(3, 3), spaceStation = spaceStation)
                 .moveForward()
                 .moveForward()
                 .position
@@ -36,7 +35,7 @@ class RoverTest {
     @Test
     fun `it should be able to turn left and forward`() {
         val actualPosition =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = planetSize, spaceStation = spaceStation)
                 .turnLeft()
                 .moveForward()
                 .position
@@ -47,7 +46,7 @@ class RoverTest {
     @Test
     fun `it should be able to move east`() {
         val actualPosition =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = planetSize, spaceStation = spaceStation)
                 .turnRight()
                 .moveForward()
                 .position
@@ -58,7 +57,7 @@ class RoverTest {
     @Test
     fun `it should be able to move south`() {
         val actualPosition =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = planetSize, spaceStation = spaceStation)
                 .turnRight()
                 .turnRight()
                 .moveForward()
@@ -68,9 +67,9 @@ class RoverTest {
     }
 
     @Test
-    fun `it should indicate if they become non-operational (falling a cliff)`() {
+    fun `it should indicate if they become non-operational (falling off a cliff)`() {
         val actualOperationalState =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = planetSize, spaceStation = spaceStation)
                 .turnLeft()
                 .moveForward()
                 .moveForward()
@@ -82,7 +81,7 @@ class RoverTest {
     @Test
     fun `it should no longer move if not operational`() {
         val rover1 =
-            spaceStation.craftRoverForPlanet(landingPosition = Pair(1, 1), planet = mars)
+            Rover(position = Pair(1, 1), planetSize = planetSize, spaceStation = spaceStation)
                 .turnLeft()
                 .moveForward()
                 .moveForward()

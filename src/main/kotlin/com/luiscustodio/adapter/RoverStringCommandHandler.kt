@@ -2,12 +2,12 @@ package com.luiscustodio.adapter
 
 import com.luiscustodio.model.Rover
 
-fun Rover.processCommands(commands: String): Rover {
-    return commands.asSequence().fold(this) { rover, command ->
+fun processCommands(commands: String): List<(Rover) -> Rover> {
+    return commands.map { command ->
         when (command) {
-            'R' -> rover.turnRight()
-            'L' -> rover.turnLeft()
-            else -> rover.moveForward()
+            'R' -> { rover: Rover -> rover.turnRight() }
+            'L' -> { rover: Rover -> rover.turnLeft() }
+            else -> { rover: Rover -> rover.moveForward() }
         }
     }
 }
